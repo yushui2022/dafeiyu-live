@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/images/logo.png" alt="大肥鱼 · AI 直播" width="900">
+</p>
+
 # 大肥鱼 · AI 直播
 
 一个会自己上网、自己找事做、跟弹幕聊天的 Q 版 AI 主播。
