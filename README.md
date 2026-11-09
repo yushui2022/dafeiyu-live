@@ -1,13 +1,12 @@
 <p align="center">
-  <img src="docs/images/logo.png" alt="大肥鱼 · AI 直播" width="900">
+  <img src="docs/images/logo.png" alt="大肥鱼 · AI 直播" width="920">
 </p>
 
-# 大肥鱼 · AI 直播
-
-一个会自己上网、自己找事做、跟弹幕聊天的 Q 版 AI 主播。
-
-弹幕进来 → 大脑回话 → 本机 TTS 出声 → 透明 Q 版形象落在客厅里 → OBS 推到 B 站。
-整条链路都在本机，不依赖云端数字人、不依赖在线 TTS API。
+<p align="center">
+  一个会自己上网、自己找事做、跟弹幕聊天的 Q 版 AI 主播。<br>
+  弹幕进来 → 大脑回话 → 本机 TTS 出声 → 透明 Q 版形象落在客厅里 → OBS 推到 B 站。<br>
+  <sub>整条链路都在本机，不依赖云端数字人、不依赖在线 TTS API。</sub>
+</p>
 
 ![直播画面](docs/images/live.jpg)
 
