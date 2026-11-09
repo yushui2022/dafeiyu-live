@@ -20,7 +20,7 @@ POST /tts     {"text":"...","mood":"auto"}
 GET  /health
 ```
 
-`mood` 可选 `auto / brat / soft / warm / lively`，`auto` 会按内容挑一个。
+`mood` 可选 `auto / lively / soft / warm`，`auto` 会按内容挑一个。
 默认音色 `sohee`，模型 `mlx-community/Qwen3-TTS-12Hz-1.7B-CustomVoice-8bit`。
 
 ## 环境变量
@@ -29,5 +29,5 @@ GET  /health
 | --- | --- | --- |
 | `TTS_MODEL` | ...CustomVoice-8bit | 换 bf16 更细，量化版更有“电”味 |
 | `TTS_VOICE` | sohee | 音色 |
-| `DEFAULT_MOOD` | brat | 默认语气 |
+| `DEFAULT_MOOD` | lively | 默认语气；轻松、俏皮，但不挑衅 |
 | `HF_ENDPOINT` | https://hf-mirror.com | 模型下载镜像 |

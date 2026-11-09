@@ -131,7 +131,7 @@ python go_live.py --cookie cookie.txt --stop # 结束直播
 | `STREAM_BROWSE_COMMENT_EVERY` | 4 | 每几页嘟囔一次 |
 | `TTS_MODEL` | ...CustomVoice-8bit | 换成 bf16 声音更细 |
 | `TTS_VOICE` | sohee | 音色 |
-| `DEFAULT_MOOD` | brat | 语气 |
+| `DEFAULT_MOOD` | lively | 语气；轻松、俏皮，但不挑衅 |
 
 ## 已知限制
 

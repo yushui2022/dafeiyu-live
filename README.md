@@ -8,9 +8,26 @@
   <sub>整条链路都在本机，不依赖云端数字人、不依赖在线 TTS API。</sub>
 </p>
 
+<p align="center">
+  <a href="https://github.com/yushui2022/dafeiyu-live"><img src="https://img.shields.io/badge/status-live-69d3b0?style=flat-square" alt="status: live"></a>
+  <a href="https://github.com/yushui2022/Hippocampus"><img src="https://img.shields.io/badge/brain-Hippocampus-9d7cff?style=flat-square" alt="brain: Hippocampus"></a>
+  <img src="https://img.shields.io/badge/runtime-macOS%20%7C%20Apple%20Silicon-7ec7ff?style=flat-square" alt="runtime: macOS Apple Silicon">
+  <img src="https://img.shields.io/badge/code-MIT-9aa0b5?style=flat-square" alt="code license: MIT">
+</p>
+
 ![直播画面](docs/images/live.jpg)
 
-## 两个仓库
+<p align="center"><sub>实际直播画面：Q 版角色、客厅场景、字幕、互动面板和 AI 生成内容标注。</sub></p>
+
+<p align="center">
+  <a href="#系统总览">系统总览</a> ·
+  <a href="#快速开始">快速开始</a> ·
+  <a href="#素材制作">素材制作</a> ·
+  <a href="#直播">直播配置</a> ·
+  <a href="#授权">授权与署名</a>
+</p>
+
+## 系统总览
 
 **这个仓库只负责「怎么播」。** 角色的记忆、人格和 DeepSeek 调用在
 [Hippocampus](https://github.com/yushui2022/Hippocampus)（海马体记忆系统）里，
@@ -24,7 +41,11 @@
 这样拆开的原因：记忆系统是通用的，直播只是它的一个出口。
 换平台、换形象、换音色，大脑都不用动。
 
-## 她会怎样播
+![系统架构](docs/images/architecture.png)
+
+<p align="center"><sub>运行时数据流：B 站事件 → 直播编排 → Hippocampus → 画面与语音 → OBS。</sub></p>
+
+## 直播行为
 
 ```text
 默认      掏出手机刷 → 顶部滚动「上网中 · 站点 + 标题 + 摘要」
@@ -34,47 +55,74 @@
 关键词    发「比心 / 贴贴 / 跳一个 / 笑一个 / 摸头」会触发对应动作
 ```
 
-## 结构
+## 仓库地图
 
-```text
-stream/        画面页（HTML/CSS/JS）· 弹幕桥 · 场控 · OBS 刷新
-assets/small/  35 条透明动作（VP9 alpha）
-assets/        客厅白天/夜晚
-tts/           本机 Qwen3-TTS（Sohee / 8bit）
-taozi_chibi/   动作生成流水线（ComfyUI + MiniMax-H3）· 提示词 · 种子图
-bilibili/      弹幕适配器 · 5000 粉以下的开播脚本
-docs/LIVE.md   运行手册（端口、OBS、B 站、环境变量）
-```
+| 路径 | 负责什么 |
+| --- | --- |
+| [`stream/`](stream/README.md) | 直播画面、场控、弹幕桥、互动统计、OBS 刷新 |
+| [`assets/`](assets/) | 客厅背景；[`assets/small/`](assets/small/) 是 35 条透明动作 |
+| [`tts/`](tts/README.md) | 本机 Qwen3-TTS，Sohee 音色与语气控制 |
+| [`taozi_chibi/`](taozi_chibi/README.md) | ComfyUI + MiniMax-H3 动作生成、抠像、几何统一 |
+| [`bilibili/`](bilibili/README.md) | B 站弹幕/礼物适配器与低粉开播脚本 |
+| [`docs/LIVE.md`](docs/LIVE.md) | 端口、启动、OBS、B 站、环境变量和故障排查 |
 
 ## 快速开始
 
-```bash
-# 0) 大脑先起来（Hippocampus 仓库，需要 DEEPSEEK_API_KEY）
-#    默认 ws://127.0.0.1:6200/ws
+### 运行前准备
 
-# 1) 直播侧依赖
+| 组件 | 用途 | 必需 |
+| --- | --- | --- |
+| Hippocampus | 记忆、人格、DeepSeek，监听 `:6200` | 是 |
+| Python 3.10+ | 直播桥与脚本 | 是 |
+| Apple Silicon + MLX | 本机 Qwen3-TTS | 语音必需 |
+| OBS | 浏览器源与 RTMP 推流 | 开播必需 |
+| ComfyUI | 只在制作新动作时使用 | 运行直播不需要 |
+
+### 启动
+
+```bash
+# 0) 先启动 Hippocampus 的 companion
+#    需要 DEEPSEEK_API_KEY；默认地址 ws://127.0.0.1:6200/ws
+
+# 1) 安装直播桥依赖
 python3 -m venv .venv
 ./.venv/bin/pip install -r stream/requirements.txt
 
-# 2) TTS 依赖（Apple Silicon，mlx-audio）
+# 2) 安装 TTS 依赖（Apple Silicon / mlx-audio）
 python3 -m venv tts/.venv
 ./tts/.venv/bin/pip install -r tts/requirements.txt
 
-# 3) 一键启动（语音 + 静态页 + 弹幕桥）
+# 3) 启动 :6210 / :6211 / :6220
 ./start.sh
-
-# 4) 打开
-open http://127.0.0.1:6210/stream/stream.html
-open http://127.0.0.1:6210/stream/control.html   # 场控
 ```
+
+### 验证
+
+```bash
+curl http://127.0.0.1:6200/health   # Hippocampus
+curl http://127.0.0.1:6211/health   # TTS
+curl http://127.0.0.1:6220/health   # 弹幕桥
+open http://127.0.0.1:6210/stream/stream.html
+open http://127.0.0.1:6210/stream/control.html
+```
+
+OBS 使用带 `?audio=1` 的地址，场控页用于手动触发动作和测试对话。
+
+### 停止
+
+```bash
+./stop.sh
+```
+
+凭证只放在本机：`.env`、B 站 Cookie、推流密钥、统计文件和虚拟环境都不会进入仓库。
 
 ---
 
-# 素材是怎么做的
+## 素材制作
 
 这部分是整套东西里最花时间的：**35 条动作，全是本机生成的，一条大约 8–12 分钟，通过率约三分之一。**
 
-## 1. 总览
+### 1. 总览
 
 ```text
 一张 Q 版立绘
@@ -92,7 +140,7 @@ open http://127.0.0.1:6210/stream/control.html   # 场控
 
 *左：模型出的绿幕原片。中：抠掉背景后的透明帧。右：合成到客厅、真正推流的画面。*
 
-## 2. 环境
+### 2. 环境
 
 | 项 | 值 |
 | --- | --- |
@@ -108,7 +156,7 @@ open http://127.0.0.1:6210/stream/control.html   # 场控
 > 只有 Q5 那份 GGUF 能用。Q6/Q8 没有 KV 元数据，ComfyUI 会报
 > `Unknown model architecture`；Abiray 的 Q8 没剪枝，36 GB 跑不动。
 
-## 3. 种子图
+### 3. 种子图
 
 ```text
 taozi_chibi/seed/q_stream_768.png   ← 站姿立绘
@@ -117,7 +165,7 @@ taozi_chibi/seed/q_stream_768.png   ← 站姿立绘
 把它复制到 ComfyUI 的 `input/` 目录，`h3_clip.py` 默认就用 `q_stream_768.png`。
 模型会把首帧**拉伸**到 1344×768，所以这张图本身必须是 16:9 附近的比例，否则人物会被压扁。
 
-## 4. 一条动作：出片
+### 4. 一条动作：出片
 
 在仓库根目录执行：
 
@@ -145,7 +193,7 @@ python taozi_chibi/h3_to_webm.py reference/h3_idle_a.mp4 assets/small \
 
 *一条 3 秒源片抽 6 帧。质检就是看这种连续帧：人物大小、位置、双脚有没有漂。*
 
-## 5. 质检在看什么
+### 5. 质检在看什么
 
 `qc_clip.py` 量的是绿幕里人物的边距：
 
@@ -160,9 +208,9 @@ OK: framing stable
   量脚底，脚底不动就是她在低头/塌肩，属于表演，不要做稳定化
 - 贴边、文字、第二个人的脸，都是硬伤，直接重跑
 
-## 6. 几何统一：最容易踩的坑
+### 6. 几何统一：最容易踩的坑
 
-### 用「头宽」当锚点，不要用包围盒高度
+#### 用「头宽」当锚点，不要用包围盒高度
 
 她抬手、拿手机都会把包围盒撑大。按高度缩放会把她整个人压小：
 
@@ -178,12 +226,12 @@ OK: framing stable
 
 *这是 think 的一条：符号把包围盒撑到 587px，人物本体只有 515px。按包围盒缩放会把她压小，按头宽 307px 就不会。*
 
-### `--keep-frame` 必须加
+#### `--keep-frame` 必须加
 
 `h3_to_webm.py` 默认的 `compose()` 会再裁切一次，并按总高度缩放到 537。
 它会把前面做的对齐全部抵消，拿手机的素材会被压小 12%。`--keep-frame` 跳过这一步。
 
-### 三段式素材要对齐共用帧
+#### 三段式素材要对齐共用帧
 
 ```text
 *_in     --align-ref last    按最后一帧对齐
@@ -194,12 +242,12 @@ OK: framing stable
 这样 `in → loop → out` 的接缝脚底误差能压到 1px 以内。
 普通待机和表情用默认（整条中位数）即可。
 
-### 两个补丁
+#### 两个补丁
 
 - `--track-top`：只做平移，用滑动平均去掉缓慢漂移，不缩放。人物自己点头不会被动
 - `--floor 740`：把 y=740 以下的 alpha 清零，防止道具/爱心从画面底部滑出时留一条边
 
-## 7. 循环、过渡、道具链
+### 7. 循环、过渡、道具链
 
 | 类型 | 怎么生成 | 用什么 |
 | --- | --- | --- |
@@ -218,7 +266,7 @@ OK: framing stable
 
 *吃东西的三段：掏出（末帧饼干在手）→ 循环（饼干一直在）→ 收回（空手）。循环的参考图就是中间那一帧。*
 
-## 8. 提示词模板
+### 8. 提示词模板
 
 ```text
 这是用于视频抠像的绿幕素材。
@@ -238,7 +286,7 @@ OK: framing stable
 首帧和末帧是同一个站姿。
 ```
 
-### 雷区
+#### 雷区
 
 - **否定词会反噬。** 写「不要出现问号」反而容易画出问号。只描述想要的状态。
 - **「想事情 / 疑惑 / 生气」很容易生成问号、感叹号、怒气蒸汽、星星。**
@@ -249,7 +297,7 @@ OK: framing stable
 - **手部精细动作很难。** 胸前比心两次都只是合掌；改成**双手举过头顶围一个大爱心**才成。
 - **爱心会往下掉。** 飞吻那条爱心一路沉到画面底边，只能重跑；提示词要写「向上飘」。
 
-## 9. 失败模式
+### 9. 失败模式
 
 | 现象 | 原因 | 处理 |
 | --- | --- | --- |
@@ -260,7 +308,7 @@ OK: framing stable
 | 爱心/道具从底部滑出 | 运动方向错了 | 重跑；或 `--floor` 兜底 |
 | 循环一次闪一下 | 首帧和末帧不同 | 检查参考图，必要时裁到共用帧 |
 
-## 10. 产能
+### 10. 产能
 
 ```text
 单条出片     8–12 分钟（4 步 / 73 帧 / 1344×768）
@@ -272,7 +320,7 @@ OK: framing stable
 想提高画质就加步数或上 1080p，但时间会翻倍。直播 1080p 的输出下，
 768p 的素材已经够用，瓶颈在模型的动作稳定性，不在分辨率。
 
-## 11. 编码与命名
+### 11. 编码与命名
 
 ```text
 编码     VP9 alpha（yuva420p），CRF 20，24fps
@@ -284,7 +332,7 @@ OK: framing stable
 
 *编码后的 WebM 抽帧。棋盘格是透明区域，直接叠在直播画面上。*
 
-## 12. 35 条成品
+### 12. 35 条成品
 
 ![动作总览](docs/images/action_grid.jpg)
 
@@ -307,9 +355,9 @@ read_in|loop|out       看书
 
 ---
 
-# 直播
+## 直播
 
-## OBS
+### OBS
 
 1. 源类型 **浏览器源**
 2. 地址 `http://127.0.0.1:6210/stream/stream.html?audio=1`
@@ -320,7 +368,7 @@ read_in|loop|out       看书
 `?audio=1` 是必须的：页面默认静音，只有 OBS 这个源带参数才出声，
 这样你在别的标签页预览时不会和 OBS 撞音。
 
-## B 站
+### B 站
 
 ```text
 粉丝 ≥ 5000   网页开播设置里直接拿地址
@@ -331,7 +379,7 @@ read_in|loop|out       看书
 
 细节见 [`docs/LIVE.md`](docs/LIVE.md) 和 [`bilibili/README.md`](bilibili/README.md)。
 
-# 踩过的坑
+## 踩过的坑
 
 - **声音重叠**：Chrome 预览页和 OBS 同时播 TTS。改成默认静音 + `?audio=1`。
 - **推流没声音**：OBS 浏览器源没开「通过 OBS 控制音频」，声音只进了系统扬声器。
@@ -343,7 +391,7 @@ read_in|loop|out       看书
 - **抖音人脸核验死循环**：默认摄像头被设成 OBS Virtual Camera，拍到的是大肥鱼。
   人脸核验必须用手机端，并先停掉虚拟摄像头。最后因为账号风控转到了 B 站。
 
-# 授权
+## 授权
 
 - **代码**：MIT
 - **形象素材**：CC BY-NC-SA 4.0，**禁止商用**，署名见 [`ASSETS.md`](ASSETS.md)
