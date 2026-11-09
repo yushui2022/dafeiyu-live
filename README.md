@@ -53,8 +53,6 @@
   </picture>
 </p>
 
-<p align="center"><sub>大脑不在本仓库：Hippocampus 通过 WebSocket 接入，换平台或换形象都不用动记忆。</sub></p>
-
 ## 直播行为
 
 ```text
