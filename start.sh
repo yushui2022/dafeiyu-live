@@ -24,6 +24,4 @@ echo "== 画面 + 弹幕桥 =="
 "$ROOT/stream/start.sh"
 
 echo
-echo "画面   http://127.0.0.1:6210/stream/stream.html?audio=1"
-echo "场控   http://127.0.0.1:6210/stream/control.html"
 echo "日志   $LOG"
