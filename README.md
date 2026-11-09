@@ -48,8 +48,8 @@
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/images/architecture-dark.svg">
-    <img src="docs/images/architecture-light.svg" alt="运行时架构：B 站事件经 danmaku.py 和弹幕桥，连接 Hippocampus，并输出到直播页与 OBS" width="1120">
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/architecture-flow-dark.svg">
+    <img src="docs/images/architecture-flow-light.svg" alt="运行时架构：B 站事件经 danmaku.py 和弹幕桥，连接 Hippocampus，并输出到直播页与 OBS" width="1120">
   </picture>
 </p>
 
