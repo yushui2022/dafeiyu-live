@@ -1,0 +1,23 @@
+# 运行产物
+.venv/
+tts/.venv/
+stream/.venv/
+__pycache__/
+*.pyc
+*.log
+*.pid
+.stats.json
+
+# 本机凭证
+cookie.txt
+bilibili/cookie.txt
+
+# 生成中间产物
+reference/
+taozi_chibi/final/
+taozi_chibi/hq/
+taozi_chibi/parts/
+taozi_chibi/overlays/
+taozi_chibi/__pycache__/
+
+.DS_Store
