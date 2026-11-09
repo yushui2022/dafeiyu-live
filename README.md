@@ -5,7 +5,7 @@
 弹幕进来 → 大脑回话 → 本机 TTS 出声 → 透明 Q 版形象落在客厅里 → OBS 推到 B 站。
 整条链路都在本机，不依赖云端数字人、不依赖在线 TTS API。
 
-![直播画面](docs/images/live.png)
+![直播画面](docs/images/live.jpg)
 
 ## 两个仓库
 
@@ -85,6 +85,10 @@ open http://127.0.0.1:6210/stream/control.html   # 场控
   → assets/small/
 ```
 
+![三段流水线](docs/images/pipeline.jpg)
+
+*左：模型出的绿幕原片。中：抠掉背景后的透明帧。右：合成到客厅、真正推流的画面。*
+
 ## 2. 环境
 
 | 项 | 值 |
@@ -134,6 +138,10 @@ python taozi_chibi/h3_to_webm.py reference/h3_idle_a.mp4 assets/small \
 
 过渡动作（掏出 / 收回）要加 `--no-last`，并把结束帧裁到和下一段共用的那一帧。
 
+![绿幕源分帧](docs/images/source_frames.jpg)
+
+*一条 3 秒源片抽 6 帧。质检就是看这种连续帧：人物大小、位置、双脚有没有漂。*
+
 ## 5. 质检在看什么
 
 `qc_clip.py` 量的是绿幕里人物的边距：
@@ -162,6 +170,10 @@ OK: framing stable
 
 所以缩放锚点是 **头宽 311**，测量时只取**最大连通块**的上 42% 区域——
 符号、手机、粒子都是独立连通块，不能算进头宽。
+
+![几何锚点](docs/images/geometry.jpg)
+
+*这是 think 的一条：符号把包围盒撑到 587px，人物本体只有 515px。按包围盒缩放会把她压小，按头宽 307px 就不会。*
 
 ### `--keep-frame` 必须加
 
@@ -198,6 +210,10 @@ OK: framing stable
 
 看书更严格：`read_in` 第 58 帧书还开着，`read_loop` / `read_out` 都从这一帧生成，
 三段的首尾帧完全重合，切换零跳变。
+
+![道具三段式](docs/images/prop_chain.jpg)
+
+*吃东西的三段：掏出（末帧饼干在手）→ 循环（饼干一直在）→ 收回（空手）。循环的参考图就是中间那一帧。*
 
 ## 8. 提示词模板
 
@@ -260,6 +276,16 @@ OK: framing stable
 输出     1366×768 画布（源 1344×768 + 左右各 11px）
 体积     每条 1–2 MB
 ```
+
+![透明分帧](docs/images/alpha_frames.jpg)
+
+*编码后的 WebM 抽帧。棋盘格是透明区域，直接叠在直播画面上。*
+
+## 12. 35 条成品
+
+![动作总览](docs/images/action_grid.jpg)
+
+*全部素材同一套几何：头宽 311 / 脚底 671 / 中心 683。*
 
 命名约定：
 
