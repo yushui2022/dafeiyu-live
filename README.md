@@ -1,6 +1,8 @@
 <p align="center">
-  <img src="docs/images/logo.png" alt="大肥鱼 · AI 直播" width="920">
+  <img src="docs/images/avatar.png" alt="大肥鱼头像" width="220">
 </p>
+
+<h1 align="center">大肥鱼 · AI 直播</h1>
 
 <p align="center">
   一个会自己上网、自己找事做、跟弹幕聊天的 Q 版 AI 主播。<br>
@@ -15,17 +17,20 @@
   <img src="https://img.shields.io/badge/code-MIT-9aa0b5?style=flat-square" alt="code license: MIT">
 </p>
 
-![直播画面](docs/images/live.jpg)
-
-<p align="center"><sub>实际直播画面：Q 版角色、客厅场景、字幕、互动面板和 AI 生成内容标注。</sub></p>
-
 <p align="center">
   <a href="#系统总览">系统总览</a> ·
+  <a href="#直播画面">直播画面</a> ·
   <a href="#快速开始">快速开始</a> ·
   <a href="#素材制作">素材制作</a> ·
   <a href="#直播">直播配置</a> ·
   <a href="#授权">授权与署名</a>
 </p>
+
+## 直播画面
+
+![直播画面](docs/images/live.jpg)
+
+<p align="center"><sub>实际直播画面：Q 版角色、客厅场景、字幕、互动面板和 AI 生成内容标注。</sub></p>
 
 ## 系统总览
 
