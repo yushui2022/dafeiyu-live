@@ -46,9 +46,14 @@
 这样拆开的原因：记忆系统是通用的，直播只是它的一个出口。
 换平台、换形象、换音色，大脑都不用动。
 
-![系统架构](docs/images/architecture.png)
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/architecture-dark.svg">
+    <img src="docs/images/architecture-light.svg" alt="运行时架构：B 站事件经 danmaku.py 和弹幕桥，连接 Hippocampus，并输出到直播页与 OBS" width="1120">
+  </picture>
+</p>
 
-<p align="center"><sub>运行时数据流：B 站事件 → 直播编排 → Hippocampus → 画面与语音 → OBS。</sub></p>
+<p align="center"><sub>大脑不在本仓库：Hippocampus 通过 WebSocket 接入，换平台或换形象都不用动记忆。</sub></p>
 
 ## 直播行为
 
