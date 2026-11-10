@@ -87,3 +87,14 @@ python3 -m venv toon3d/.venv
 ```
 
 需要系统里有 `ffmpeg`。
+
+## 造型草模
+
+`build_blockout.py` 用 Blender 基础体生成第一版 Q 版形状草模，包含三渲二材质、描边和三视图渲染：
+
+```bash
+/Applications/Blender.app/Contents/MacOS/Blender -b \
+  --python toon3d/build_blockout.py -- \
+  --blend /tmp/大肥鱼_blockout.blend \
+  --preview-dir /tmp/大肥鱼_preview
+```
