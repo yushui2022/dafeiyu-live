@@ -14,7 +14,14 @@ OUT="$2"
 shift 2
 
 mkdir -p "$OUT"
-BLENDER="${BLENDER:-blender}"
+
+if [ -z "${BLENDER:-}" ]; then
+  if [ -x /Applications/Blender.app/Contents/MacOS/Blender ]; then
+    BLENDER=/Applications/Blender.app/Contents/MacOS/Blender
+  else
+    BLENDER=blender
+  fi
+fi
 
 if ! command -v "$BLENDER" >/dev/null 2>&1; then
   echo "Blender not found: $BLENDER" >&2
