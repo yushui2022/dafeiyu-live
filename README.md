@@ -377,6 +377,7 @@ OBS 使用带 `?audio=1` 的地址，场控页用于手动触发动作和测试�
 | [`assets/`](assets/) | 客厅背景；[`assets/small/`](assets/small/) 是 35 条透明动作 |
 | [`tts/`](tts/README.md) | 本机 Qwen3-TTS，Sohee 音色与语气控制 |
 | [`taozi_chibi/`](taozi_chibi/README.md) | ComfyUI + MiniMax-H3 动作生成、抠像、几何统一 |
+| [`toon3d/`](toon3d/README.md) | 三渲二实验：Blender 透明帧 → 对齐 → VP9 alpha WebM |
 | [`bilibili/`](bilibili/README.md) | B 站弹幕/礼物适配器与低粉开播脚本 |
 | [`docs/LIVE.md`](docs/LIVE.md) | 端口、启动、OBS、B 站、环境变量和故障排查 |
 

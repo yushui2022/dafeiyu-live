@@ -3,9 +3,14 @@
   const BRIDGE = `ws://${location.hostname}:6220/ws`;
   // audio is opt-in: only the OBS browser source passes ?audio=1, so any other
   // tab previewing the stage stays silent instead of talking over it
-  const MUTED = new URLSearchParams(location.search).get("audio") !== "1";
+  const PARAMS = new URLSearchParams(location.search);
+  const MUTED = PARAMS.get("audio") !== "1";
   const TTS_URL = "http://127.0.0.1:6211/tts";
-  const ASSETS = "../assets/small/";
+  // 默认沿用 2D 素材；?set=toon3d 切到三渲二动作做对比
+  const ASSET_SET = PARAMS.get("set") === "toon3d" || PARAMS.get("set") === "3d"
+    ? "toon3d"
+    : "small";
+  const ASSETS = `../assets/${ASSET_SET}/`;
   const BG = "../assets/bg/bedroom.webm";
 
   // 每个道具动作都是三段：掏出来 / 循环 / 收回去
