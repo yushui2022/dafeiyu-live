@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>大肥鱼 · VRM 第一课</title>
+<style>
+  :root {
+    --ink: #eef1f7;
+    --muted: #a7afbf;
+    --line: rgba(255,255,255,.14);
+    --panel: rgba(16,19,28,.82);
+    --accent: #7ec7ff;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #0e1119; color: var(--ink); font-family: "PingFang SC","Hiragino Sans GB",sans-serif; }
+  body.transparent { background: transparent; }
+  #stage { position: fixed; inset: 0; }
+  #stage.transparent { background: transparent; }
+  canvas { display: block; width: 100%; height: 100%; }
+  #hud {
+    position: fixed; left: 24px; top: 24px; width: 300px;
+    padding: 18px 18px 16px; border: 1px solid var(--line); border-radius: 18px;
+    background: var(--panel); backdrop-filter: blur(16px); box-shadow: 0 16px 50px rgba(0,0,0,.28);
+  }
+  #hud h1 { margin: 0 0 4px; font-size: 20px; letter-spacing: .02em; }
+  #hud .sub { color: var(--muted); font-size: 12px; line-height: 1.6; margin-bottom: 14px; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; }
+  button, .file {
+    border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.06);
+    color: var(--ink); padding: 8px 13px; font-size: 13px; cursor: pointer;
+  }
+  button:hover, .file:hover { border-color: rgba(126,199,255,.55); background: rgba(126,199,255,.12); }
+  button.primary { background: rgba(126,199,255,.16); border-color: rgba(126,199,255,.5); }
+  .file { display: inline-block; }
+  .file input { display: none; }
+  #status { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; line-height: 1.6; white-space: pre-wrap; }
+  #notice {
+    position: fixed; left: 24px; bottom: 20px; max-width: 620px;
+    color: rgba(238,241,247,.55); font-size: 11px; line-height: 1.6;
+  }
+  #notice b { color: rgba(255,190,190,.85); font-weight: 600; }
+  #toggle { position: fixed; right: 24px; top: 24px; }
+  .pill { position: fixed; right: 24px; bottom: 20px; color: rgba(238,241,247,.4); font-size: 11px; letter-spacing: .08em; }
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.187.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.187.0/examples/jsm/",
+    "@pixiv/three-vrm": "https://unpkg.com/@pixiv/three-vrm@3.5.5/lib/three-vrm.module.js"
+  }
+}
+</script>
+</head>
+<body>
+<div id="stage"><canvas id="canvas"></canvas></div>
+
+<aside id="hud">
+  <h1>第一课 · VRM 跑起来</h1>
+  <div class="sub">这不是 AI 视频。是一个 3D 模型，靠骨骼、表情和物理在实时渲染。</div>
+  <div class="row">
+    <button id="shake" class="primary">摇头 6 秒</button>
+    <button id="blink">眨眼</button>
+    <button id="wave">挥手</button>
+    <button id="reset">重置视角</button>
+  </div>
+  <div class="row" style="margin-top:8px">
+    <label class="file">换一个 VRM<input id="file" type="file" accept=".vrm,.glb"></label>
+    <button id="transparent">透明背景</button>
+  </div>
+  <div id="status">加载模型中…</div>
+</aside>
+
+<div id="notice">
+  <b>本地学习页，不接入直播。</b> 左下角是模型授权提示；社区模型禁止作为个人形象直播、禁止二次分发。换自己的模型再谈上线。
+</div>
+<div class="pill">LOCAL LEARNING · THREE-VRM</div>
+
+<script type="module" src="./viewer.js"></script>
+</body>
+</html>

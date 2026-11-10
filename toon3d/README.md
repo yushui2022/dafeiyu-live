@@ -98,3 +98,13 @@ python3 -m venv toon3d/.venv
   --blend /tmp/大肥鱼_blockout.blend \
   --preview-dir /tmp/大肥鱼_preview
 ```
+
+## VRM 第一课
+
+`toon3d/viewer/` 是一个本地 three.js + three-vrm 学习页：加载 VRM、摇头、眨眼、播放内置动作、切透明背景。
+
+```text
+http://127.0.0.1:6210/toon3d/viewer/
+```
+
+模型文件放在 `toon3d/viewer/models/`，已被 `.gitignore` 忽略，不进仓库。
